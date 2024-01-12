@@ -1,0 +1,18 @@
+---
+- block:  # Install Docker for Debian OS family
+
+  - name: Update APT package cache
+    apt:
+      update_cache: yes
+
+  - name: Install Docker
+    apt:
+      name:
+        - docker-ce
+        - docker-ce-cli
+      state: present
+      update_cache: yes
+
+  when: 
+    - ansible_os_family == 'Debian'
+    - docker_installed is false

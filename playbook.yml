@@ -1,0 +1,11 @@
+- hosts: master_nodes
+  become: yes
+  roles:
+    - init
+    - docker
+
+- hosts: worker_nodes
+  become: yes
+  roles:
+    - init
+    - docker

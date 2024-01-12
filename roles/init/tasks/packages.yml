@@ -1,0 +1,16 @@
+---
+- block:  # Install dependencies
+
+  - name: Install prerequisites APT packages
+    apt:
+      name:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg2
+        - lsb-release
+      state: present
+
+  when:
+    - ansible_os_family == 'Debian'
+    - docker_installed is false

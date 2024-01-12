@@ -1,0 +1,16 @@
+---
+- block:  # Add Kubernetes APT repository
+
+   - name: Add Google official GPG key
+     apt_key:
+       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+       state: present
+
+   - name: Add Kubernetes Repository
+     apt_repository:
+       repo: deb [arch={{ ansible_architecture | replace('x86_64', 'amd64') | replace('aarch64', 'arm64') }}] http://apt.kubernetes.io/ kubernetes-{{ ansible_distribution_release }} main 
+       state: present
+
+    when:
+      - ansible_os_family == 'Debian'
+      - kubernetes_installed is false

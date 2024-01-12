@@ -1,0 +1,45 @@
+---
+- block:  # Install and configure containerd for Debian OS family
+
+  - name: Update APT package cache
+    apt:
+      update_cache: yes
+
+   - name: Create a empty file for containerd module.
+     copy:
+        content: ""
+        dest: /etc/modules-load.d/containerd.conf
+        force: no
+
+   - name: Configure Linux kernel modules for containerd.
+     blockinfile:
+        path: /etc/modules-load.d/containerd.conf 
+        block: |
+            overlay
+            br_netfilter
+
+  - name: Install containerd
+    apt:
+      name:
+        - containerd.io
+      state: present
+      update_cache: yes
+
+   - name: Configure containerd.
+     file:
+        path: /etc/containerd
+        state: directory
+
+   - name: Configure containerd.
+     shell: /usr/bin/containerd config default > /etc/containerd/config.toml
+
+   - name: Enable containerd service, and start it.
+     systemd:
+        name: containerd
+        state: restarted
+        enabled: yes
+        daemon-reload: yes
+
+  when:
+    - ansible_os_family == 'Debian'
+    - docker_installed is false

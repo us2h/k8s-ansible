@@ -1,0 +1,19 @@
+---
+- name: Turn off swap
+  command: swapoff -a
+  when: ansible_os_family == 'Debian'
+
+- name: Comment swap file from /etc/fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^(.+swap.+$)'
+    replace: '#\1'
+  when: ansible_os_family == 'Debian'
+
+- name: Remove swapfile
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/swap.img"
+  when: ansible_os_family == 'Debian'

@@ -1,0 +1,3 @@
+---
+- name: restart ssh
+  include_tasks: restart-ssh.yml

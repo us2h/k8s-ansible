@@ -1,0 +1,11 @@
+---
+- name: Install ntpd
+  apt:
+    name: ntp
+    state: present
+
+- name: Ensure ntpd service is running and enabled at boot
+  service:
+    name: ntp
+    state: started
+    enabled: yes
