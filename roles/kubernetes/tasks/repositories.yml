@@ -1,16 +1,28 @@
 ---
 - block:  # Add Kubernetes APT repository
 
-   - name: Add Google official GPG key
-     apt_key:
-       url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-       state: present
+  - name: Ensure /etc/apt/keyrings exists
+    file:
+      path: /etc/apt/keyrings
+      state: directory
+      mode: '0755'
 
-   - name: Add Kubernetes Repository
-     apt_repository:
-       repo: deb [arch={{ ansible_architecture | replace('x86_64', 'amd64') | replace('aarch64', 'arm64') }}] http://apt.kubernetes.io/ kubernetes-{{ ansible_distribution_release }} main 
-       state: present
+  - name: Download Kubernetes signing key
+    get_url:
+      url: https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key
+      dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      mode: '0644'
 
-    when:
-      - ansible_os_family == 'Debian'
-      - kubernetes_installed is false
+  - name: Add Kubernetes apt repository
+    lineinfile:
+      path: /etc/apt/sources.list.d/kubernetes.list
+      line: 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /'
+      create: yes
+      state: present
+
+  - name: Update APT cache
+    apt:
+      update_cache: yes
+
+  when:
+    - ansible_os_family == 'Debian'

@@ -1,14 +1,13 @@
 ---
 - block:  # Install Kubernetes packages
 
-   - name: Installing Kubernetes packages.
-     apt: 
-        name:
-          - kubeadm
-          - kubectl
-          - kubelet
-        state: present
+  - name: Installing Kubernetes packages.
+    apt: 
+      name:
+        - kubeadm
+        - kubectl
+        - kubelet
+      state: present
 
-    when:
-      - ansible_os_family == 'Debian'
-      - kubernetes_installed is false
+  when:
+    - ansible_os_family == 'Debian'
