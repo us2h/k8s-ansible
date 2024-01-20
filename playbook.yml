@@ -1,4 +1,4 @@
-- hosts: master_nodes, worker_nodes
+- hosts: master_nodes
   become: yes
   roles:
     - init

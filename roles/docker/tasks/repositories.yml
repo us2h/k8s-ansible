@@ -1,17 +1,11 @@
 ---
 - block:  # Add Docker APT repository
 
-  - name: Create a directory for repository keys
-    file:
-      path: /usr/share/keyrings
-      state: directory
-      mode: '0755'
-
-  - name: Download Docker GPG key
-    get_url:
+  - name: Add Docker GPG key
+    apt_key:
       url: https://download.docker.com/linux/ubuntu/gpg
-      dest: /usr/share/keyrings/docker-archive-keyring.gpg
-      mode: '0644'
+      id: 0EBFCD88
+      state: present
 
   - name: Add Docker APT repository
     apt_repository:

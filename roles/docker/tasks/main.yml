@@ -1,5 +1,5 @@
 ---
-- include_tasks: repository.yml
+- include_tasks: repositories.yml
 - include_tasks: docker.yml
 - include_tasks: containerd.yml
 

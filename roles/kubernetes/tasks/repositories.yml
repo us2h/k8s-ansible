@@ -7,21 +7,22 @@
       state: directory
       mode: '0755'
 
-  - name: Download Kubernetes signing key
-    get_url:
-      url: https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key
-      dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-      mode: '0644'
-
-  - name: Add Kubernetes apt repository
-    lineinfile:
-      path: /etc/apt/sources.list.d/kubernetes.list
-      line: 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /'
-      create: yes
+  - name: Add Kubernetes signing key
+    apt_key:
+      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
       state: present
 
-  - name: Update APT cache
-    apt:
+  - name: Add additional public key
+    apt_key:
+      id: 234654DA9A296436
+      keyserver: keyserver.ubuntu.com
+      state: present
+
+  - name: Add Kubernetes apt repository
+    apt_repository:
+      repo: 'deb https://packages.cloud.google.com/apt/ kubernetes-xenial main'
+      state: present
+      filename: kubernetes.list
       update_cache: yes
 
   when:
