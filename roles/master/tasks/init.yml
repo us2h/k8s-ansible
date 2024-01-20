@@ -1,0 +1,16 @@
+---
+- block:  # Init cluster with kubeadm
+
+  - name: Initialize the Kubernetes Cluster
+    shell: kubeadm init
+    args:
+      creates: /etc/kubernetes/admin.conf
+
+  - name: Get workers join command
+    shell: kubeadm token create --print-join-command
+    register: join_command_result
+    changed_when: false
+
+  - name: Set fact for join command
+    set_fact:
+      worker_join_command: "{{ join_command_result.stdout }}"

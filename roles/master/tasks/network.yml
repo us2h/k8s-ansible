@@ -1,0 +1,9 @@
+---
+- block:  # Deploy pod network
+
+  - name: Deploy pod network
+    shell: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+    args:
+      executable: /bin/bash
+    environment:
+      KUBECONFIG: /etc/kubernetes/admin.conf

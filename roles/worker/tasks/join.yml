@@ -1,0 +1,7 @@
+---
+- block:  # Join worker nodes to the cluster
+
+  - name: Join cluster
+    shell: "{{ hostvars['k8s-test-master-1'].worker_join_command }}"
+    args:
+      executable: /bin/bash

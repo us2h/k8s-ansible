@@ -1,6 +1,16 @@
-- hosts: master_nodes
+- hosts: master_nodes, worker_nodes
   become: yes
   roles:
     - init
     - docker
     - kubernetes
+
+- hosts: master_nodes
+  become: yes
+  roles:
+    - master
+
+- hosts: worker_nodes
+  become: yes
+  roles:
+    - worker

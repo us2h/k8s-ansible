@@ -1,0 +1,9 @@
+---
+- block:  # Restart services and enable them on boot
+
+  - name: Restart kubelet service
+    systemd:
+      name: kubelet
+      state: restarted
+      enabled: yes
+      daemon-reload: yes
