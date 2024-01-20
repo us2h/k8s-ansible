@@ -33,6 +33,12 @@
   - name: Configure containerd.
     shell: /usr/bin/containerd config default > /etc/containerd/config.toml
 
+  - name: Ensure SystemdCgroup is set to true in /etc/containerd/config.toml
+    replace:
+      path: /etc/containerd/config.toml
+      regexp: '^(\s*)SystemdCgroup\s*=\s*false'
+      replace: '\1SystemdCgroup = true'
+
   - name: Enable containerd service, and start it.
     systemd:
       name: containerd
