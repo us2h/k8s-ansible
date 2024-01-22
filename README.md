@@ -36,12 +36,8 @@ Tested with:
   * [Pod network overlay](#pod-network-overlay)
 * **[Running](#running)**
 
-----
-
 ## Requirements
 Ansible required.
-
-----
 
 ## Ansible
 [Ansible](https://github.com/ansible/ansible) is an open-source automation tool, or platform, used for IT tasks such as configuration management, application deployment, intra-service orchestration and provisioning.
@@ -68,8 +64,6 @@ Choose one of the latests stable. For example 3.11.5. To install:
 
 Now, you are able to create a virtual environment with the installed version of Python.
 
----
-
 #### Virtual environment
 If pyenv is installed then create virtual environment. For example: 
 
@@ -82,8 +76,6 @@ Activate virtual environment with command:
     pyenv activate ansible
 
 Now, everything is ready for the Ansible installation.
-
----
 
 #### Ansible package
 
@@ -122,8 +114,6 @@ The very first and basic role that makes initial hosts preparation. Not only spe
  **[swap](./roles/init/tasks/swap.yml)** | Disable SWAP. Comment SWAP mount in ``/etc/fstab``. Remove SWAP file if exists |
 | **[ntp](./roles/init/tasks/ntp.yml)** | Install NTP daemon. Ensures it's running. |
 
----
-
 #### Docker role
 This role is needed to add necessary repositories, install ``Docker`` and ``Containerd`` and configure containerd for Kubernetes.
 
@@ -132,8 +122,6 @@ This role is needed to add necessary repositories, install ``Docker`` and ``Cont
 | **[repositories](./roles/docker/tasks/repositories.yml)** | Add necessary Docker repository |
 | **[docker](./roles/docker/tasks/docker.yml)** | Install Docker |
 | **[containerd](./roles/docker/tasks/containerd.yml)** | Configure necessary Linux kernel modules. Install Containerd and configure it. Make sure it running |
-
----
 
 #### Kubernetes role
 This role to configure hosts with Kubernetes specific options, add necessary repositories and install Kubernetes packages - ``kubeadm``, ``kubelet``, ``kubectl``.
@@ -145,8 +133,6 @@ This role to configure hosts with Kubernetes specific options, add necessary rep
 | **[packages](./roles/kubernetes/tasks/packages.yml)** | Install Kubernetes packages: kubeadm, kubelet, kubectl |
 | **[services](./roles/kubernetes/tasks/services.yml)** | Restart kubelet service and make sure it is running |
 
----
-
 #### Master role
 This role to Initialize Kubernetes cluster and deploy pod network. For master node only.
 
@@ -154,8 +140,6 @@ This role to Initialize Kubernetes cluster and deploy pod network. For master no
 | --- | --- |
 | **[init](./roles/master/tasks/init.yml)** | Initialize Kubernetes cluster. Save worker join command as variable |
 | **[network](./roles/master/tasks/network.yml)** | Deploy pod network |
-
----
 
 #### Worker role
 This role to run cluster join command on every worker node. Join command is taking from variable saved while master role execution.
@@ -170,12 +154,8 @@ The mandatory only configuration is inventory file hostnames or IP addresses for
 #### Hosts
 Put your hosts for master and worker nodes into **[inventory](./inventory/hosts.ini)** file. At this moment HA (High availability) is not implemented, so use 1 master node and any number of worker nodes.
 
----
-
 #### User
 For future implementation...
-
-----
 
 #### Version
 For future implementation...
@@ -185,12 +165,8 @@ For future implementation...
 #### Pod network CIDR
 For future implementation...
 
----
-
 #### Pod network overlay
 For future implementation...
-
----
 
 ## Running
 When all hosts configured in inventory file you could run playbook:
