@@ -4,6 +4,15 @@ The purpose of this project is to automate the process of Kubernetes cluster con
 ### Quick start
 If you are familiar with Ansible and its usage, you can simply configure the **[inventory](./inventory/hosts.ini)** and [run](#running) the playbook.
 
+Keep in mind. If you will change group name for master nodes in **[inventory](./inventory/hosts.ini)** file then change also **[join](./roles/worker/tasks/join.yml)** task:
+
+    shell: "{{ hostvars[groups['master_nodes'][0]].worker_join_command }}"
+
+To new:
+
+    shell: "{{ hostvars[groups['NEW_GROUP_NAME_HERE'][0]].worker_join_command }}"
+
+
 ### Compatible OS
 Tested with:
 * Ubuntu 22.04
