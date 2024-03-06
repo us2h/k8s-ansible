@@ -6,11 +6,11 @@ If you are familiar with Ansible and its usage, you can simply configure the **[
 
 Keep in mind. If you will change group name for master nodes in **[inventory](./inventory/hosts.ini)** file then change also **[join](./roles/worker/tasks/join.yml)** task:
 
-    shell: "{{ hostvars[groups['master_nodes'][0]].worker_join_command }}"
+    "{{ hostvars[groups['master_nodes'][0]].worker_join_command }}"
 
 To new:
 
-    shell: "{{ hostvars[groups['NEW_GROUP_NAME_HERE'][0]].worker_join_command }}"
+    "{{ hostvars[groups['NEW_GROUP_NAME_HERE'][0]].worker_join_command }}"
 
 
 ### Compatible OS
