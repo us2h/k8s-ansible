@@ -9,8 +9,9 @@
 
   - name: Add Kubernetes signing key
     apt_key:
-      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      url: https://dl.k8s.io/apt/doc/apt-key.gpg
       state: present
+      keyring: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
   - name: Add additional public key
     apt_key:
@@ -20,7 +21,7 @@
 
   - name: Add Kubernetes apt repository
     apt_repository:
-      repo: 'deb https://packages.cloud.google.com/apt/ kubernetes-xenial main'
+      repo: 'deb https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /'
       state: present
       filename: kubernetes.list
       update_cache: yes
