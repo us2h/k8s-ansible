@@ -15,6 +15,7 @@ To new:
 
 ### Compatible OS
 Tested with:
+* Ubuntu 24.04
 * Ubuntu 22.04
 * Debian 12
 
