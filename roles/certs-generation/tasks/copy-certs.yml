@@ -1,0 +1,24 @@
+---
+- name: Copy admin certificate to local machine
+  fetch:
+    src: "/etc/kubernetes/pki/admin.crt"
+    dest: "{{ local_kube_dir }}/admin.crt"
+    flat: yes
+  become: yes
+  delegate_to: "{{ groups['master_nodes'][0] }}"
+
+- name: Copy admin key to local machine
+  fetch:
+    src: "/etc/kubernetes/pki/admin.key"
+    dest: "{{ local_kube_dir }}/admin.key"
+    flat: yes
+  become: yes
+  delegate_to: "{{ groups['master_nodes'][0] }}"
+
+- name: Copy CA certificate to local machine
+  fetch:
+    src: "/etc/kubernetes/pki/ca.crt"
+    dest: "{{ local_kube_dir }}/ca.crt"
+    flat: yes
+  become: yes
+  delegate_to: "{{ groups['master_nodes'][0] }}"

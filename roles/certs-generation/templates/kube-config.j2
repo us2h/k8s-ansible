@@ -1,0 +1,17 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: {{ local_kube_dir }}/ca.crt
+    server: https://{{ hostvars[groups['master_nodes'][0]].ip_address }}:6443
+  name: {{ cluster_name }}
+contexts:
+- context:
+    cluster: {{ cluster_name }}
+    user: {{ user_name }}
+  name: {{ context_name }}
+current-context: {{ context_name }}
+users:
+- name: {{ user_name }}
+  user:
+    client-certificate: {{ local_kube_dir }}/admin.crt
+    client-key: {{ local_kube_dir }}/admin.key

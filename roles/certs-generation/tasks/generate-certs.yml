@@ -1,0 +1,15 @@
+---
+- name: Generate admin key
+  shell: "openssl genrsa -out /etc/kubernetes/pki/admin.key {{ rsa_key_size }}"
+  become: yes
+  delegate_to: "{{ groups['master_nodes'][0] }}"
+
+- name: Generate admin CSR
+  shell: "openssl req -new -key /etc/kubernetes/pki/admin.key -out /etc/kubernetes/pki/admin.csr -subj \"/CN={{ user_name }}/O=system:masters\""
+  become: yes
+  delegate_to: "{{ groups['master_nodes'][0] }}"
+
+- name: Generate admin certificate
+  shell: "openssl x509 -req -in /etc/kubernetes/pki/admin.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out /etc/kubernetes/pki/admin.crt -days {{ cert_expiration_days }}"
+  become: yes
+  delegate_to: "{{ groups['master_nodes'][0] }}"

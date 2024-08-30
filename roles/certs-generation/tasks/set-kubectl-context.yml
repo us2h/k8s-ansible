@@ -1,0 +1,6 @@
+---
+- name: Set kubectl context
+  command: kubectl config use-context {{ context_name }}
+  when: kubectl_check.rc == 0
+  become: no
+  delegate_to: localhost

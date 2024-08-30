@@ -1,0 +1,22 @@
+---
+- name: Check if kubectl is installed
+  command: kubectl version --client
+  register: kubectl_check
+  ignore_errors: yes
+  become: no
+  delegate_to: localhost
+
+- name: Ensure .kube directory exists
+  file:
+    path: "{{ local_kube_dir }}"
+    state: directory
+    mode: '0700'
+  become: no
+  when: kubectl_check.rc == 0
+  delegate_to: localhost
+
+- name: Fail if kubectl is not installed
+  fail:
+    msg: "kubectl is not installed on the local machine."
+  when: kubectl_check.rc != 0
+  delegate_to: localhost

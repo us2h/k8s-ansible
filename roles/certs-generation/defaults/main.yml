@@ -1,0 +1,6 @@
+local_kube_dir: "{{ lookup('env', 'HOME') }}/.kube"
+cluster_name: "k8s-test-cluster"
+context_name: "k8s-test-context"
+user_name: "admin"
+cert_expiration_days: 3650
+rsa_key_size: 4096
