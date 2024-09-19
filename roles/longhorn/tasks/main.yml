@@ -1,0 +1,6 @@
+---
+- include_tasks: label-nodes.yml
+- include_tasks: taint-nodes.yml
+- include_tasks: helm-repository.yml
+- include_tasks: install-longhorn.yml
+- include_tasks: storage-class.yml

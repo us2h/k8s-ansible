@@ -4,13 +4,29 @@
     - init
     - docker
     - kubernetes
+  vars_files:
+    - vars/main.yml
+
+- hosts: load_balancer
+  become: yes
+  roles:
+    - role: init
+      when: ha.enabled
+    - role: lb
+      when: ha.enabled
+  vars_files:
+    - vars/main.yml
 
 - hosts: master_nodes
   become: yes
   roles:
     - master
+  vars_files:
+    - vars/main.yml
 
 - hosts: worker_nodes
   become: yes
   roles:
     - worker
+  vars_files:
+    - vars/main.yml

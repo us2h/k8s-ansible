@@ -1,0 +1,11 @@
+---
+- name: Label storage nodes
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Node
+    name: "{{ inventory_hostname}}"
+    state: present
+    definition:
+      metadata:
+        labels:
+          longhorn: storage

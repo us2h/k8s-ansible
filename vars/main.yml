@@ -1,0 +1,9 @@
+kubernetes_version: 1.31
+
+ha:
+  enabled: true
+
+  stats_login: admin
+  stats_password: password
+
+control_plane_address: "{% if ha.enabled %}{{ hostvars[groups['load_balancer'][0]].ip_address }}{% else %}{{ hostvars[groups['master_nodes'][0]].ip_address }}{% endif %}"

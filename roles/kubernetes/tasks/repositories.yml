@@ -21,7 +21,7 @@
 
   - name: Add Kubernetes apt repository
     apt_repository:
-      repo: 'deb https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /'
+      repo: "deb https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_version }}/deb/ /"
       state: present
       filename: kubernetes.list
       update_cache: yes

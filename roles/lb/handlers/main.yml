@@ -1,0 +1,3 @@
+---
+- name: restart haproxy
+  include_tasks: restart-haproxy.yml

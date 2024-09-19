@@ -1,0 +1,13 @@
+---
+- name: Taint storage nodes
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Node
+    name: "{{ inventory_hostname}}"
+    state: present
+    definition:
+      spec:
+        taints:
+          - key: "key"
+            value: "value"
+            effect: "NoSchedule"

@@ -4,17 +4,14 @@
   - name: Install prerequisites APT packages
     apt:
       name:
-        # Common dependencies
-        - apt-transport-https
-        - ca-certificates
         - bash
-        - curl
-        - gnupg2
-        - lsb-release
-        - socat
-        # Longhorn dependencies
+        - grep
+        - awk
         - open-iscsi
         - nfs-common
+        - findmnt
+        - blkid
+        - lsblk
       state: present
 
   when:

@@ -1,0 +1,22 @@
+longhorn_namespace: longhorn-system
+longhorn_helm_repo: https://charts.longhorn.io
+longhorn_helm_version: 1.7.0
+
+# Nodes configuration
+storage_nodes:
+  - name: k8s-storage-node-1
+    disk_path: "/mnt/disk"
+    taint_key: "key"
+    taint_value: "value"
+    taint_effect: "NoSchedule"
+  - name: k8s-storage-node-2
+    disk_path: "/mnt/disk"
+    taint_key: "key"
+    taint_value: "value"
+    taint_effect: "NoSchedule"
+
+# Storage class configuration
+longhorn_storage_class_name: longhorn-fast
+longhorn_number_of_replicas: "2"
+longhorn_stale_replica_timeout: "2880"
+longhorn_fs_type: ext4

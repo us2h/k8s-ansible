@@ -1,16 +1,58 @@
 ---
-- block:  # Init cluster with kubeadm
+- block:
 
-  - name: Initialize the Kubernetes Cluster
-    shell: kubeadm init
+  - name: Set kubeadm init command for non-HA
+    set_fact:
+      kubeadm_init_cmd: "kubeadm init"
+    when: not ha.enabled
+
+  - name: Set kubeadm init command for HA
+    set_fact:
+      kubeadm_init_cmd: >-
+        kubeadm init --control-plane-endpoint="{{ control_plane_address }}:6443" --upload-certs
+    when: ha.enabled
+
+  - name: Initialize the Kubernetes Cluster on first master node
+    shell: "{{ kubeadm_init_cmd }}"
     args:
       creates: /etc/kubernetes/admin.conf
+    when: inventory_hostname == groups['master_nodes'][0]
 
-  - name: Get workers join command
+  - name: Generate worker join command on first master node
     shell: kubeadm token create --print-join-command
-    register: join_command_result
-    changed_when: false
+    register: worker_join_command_result
+    when: inventory_hostname == groups['master_nodes'][0]
 
-  - name: Set fact for join command
+  - name: Generate certificate key on first master node
+    shell: kubeadm init phase upload-certs --upload-certs
+    register: certificate_key_result
+    when: inventory_hostname == groups['master_nodes'][0]
+
+  - name: Generate master join command base on first master node
+    shell: kubeadm token create --print-join-command
+    register: master_join_command_base_result
+    when: inventory_hostname == groups['master_nodes'][0]
+
+  - name: Prepare base for join commands
     set_fact:
-      worker_join_command: "{{ join_command_result.stdout }}"
+      master_join_command_base: "{{ master_join_command_base_result.stdout }}"
+      certificate_key: "{{ certificate_key_result.stdout | regex_search('certificate key:\\n([a-f0-9]{64})', '\\1') | regex_replace('\\[|\\]', '') | regex_replace(\"'\", '') }}"
+    delegate_to: localhost
+    run_once: true
+    when: inventory_hostname == groups['master_nodes'][0]
+
+  - name: Set join commands as global facts
+    set_fact:
+      worker_join_command: "{{ worker_join_command_result.stdout }}"
+      master_join_command: "{{ master_join_command_base }} --control-plane --certificate-key {{ certificate_key }}"
+    delegate_to: localhost
+    run_once: true
+    when: inventory_hostname == groups['master_nodes'][0]
+
+  - name: Join other master nodes to the cluster as control plane nodes
+    shell: "{{ master_join_command }}"
+    args:
+      creates: /etc/kubernetes/admin.conf
+    when:
+      - inventory_hostname != groups['master_nodes'][0]
+      - inventory_hostname in groups['master_nodes']

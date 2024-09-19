@@ -1,0 +1,38 @@
+---
+- name: Install HAProxy
+  apt:
+    name: haproxy
+    state: present
+  become: yes
+
+- name: Append HAProxy configuration for Kubernetes API
+  blockinfile:
+    path: /etc/haproxy/haproxy.cfg
+    block: |
+      frontend k8s-api
+          bind *:6443
+          option tcplog
+          mode tcp
+          default_backend k8s-masters
+
+      backend k8s-masters
+          mode tcp
+          balance roundrobin
+          option tcp-check
+          default-server inter 3s fall 3 rise 2
+      {% for host in groups['master_nodes'] %}
+          server {{ host }} {{ hostvars[host].ip_address }}:6443 check
+      {% endfor %}
+
+      listen stats
+          bind *:8404
+          mode http
+          stats enable
+          stats uri /stats
+          stats refresh 10s
+          stats auth {{ ha.stats_login }}:{{ ha.stats_password }}
+
+    marker: "# {mark} Kubernetes API Load Balancing Configuration"
+    insertafter: EOF
+  become: yes
+  notify: restart haproxy

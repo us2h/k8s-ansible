@@ -2,4 +2,5 @@
   become: yes
   roles:
     - certs-generation
-
+  vars_files:
+    - vars/main.yml

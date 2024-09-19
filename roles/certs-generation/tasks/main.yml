@@ -1,15 +1,6 @@
 ---
-- name: Prerequisites
-  include_tasks: check-kubectl-installed.yml
-
-- name: Certificates generation
-  include_tasks: generate-certs.yml
-
-- name: Certificates coping
-  include_tasks: copy-certs.yml
-
-- name: Kubeconfig generation
-  include_tasks: generate-kubeconfig.yml
-
-- name: Context setting
-  include_tasks: set-kubectl-context.yml
+- include_tasks: check-kubectl-installed.yml
+- include_tasks: generate-certs.yml
+- include_tasks: copy-certs.yml
+- include_tasks: generate-kubeconfig.yml
+- include_tasks: set-kubectl-context.yml

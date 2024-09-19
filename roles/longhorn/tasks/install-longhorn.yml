@@ -1,0 +1,9 @@
+---
+- name: Install Longhorn using Helm
+  community.general.helm:
+    name: longhorn
+    chart_ref: longhorn/longhorn
+    namespace: "{{ longhorn_namespace }}"
+    create_namespace: true
+    version: "{{ longhorn_helm_version }}"
+    values: "{{ lookup('template', 'values.yaml.j2') }}"

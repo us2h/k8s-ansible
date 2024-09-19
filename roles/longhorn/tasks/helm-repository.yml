@@ -1,0 +1,5 @@
+---
+- name: Add Longhorn Helm repository
+  community.general.helm_repository:
+    name: longhorn
+    repo_url: "{{ longhorn_helm_repo }}"
